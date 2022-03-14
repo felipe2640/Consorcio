@@ -13,29 +13,28 @@ import {
   useBreakpointValue,
   useColorMode,
   FlexProps,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
+  FormControl,
+  FormErrorMessage,
+  FormHelperText,
+  FormLabel,
   IconProps,
-  Icon,
 } from '@chakra-ui/react';
 import { DarkModeSwitch } from '../components/DarkModeSwitch'
 import React, { useState } from 'react';
-import EmailService from '../lib/send';
+import { Icon } from "@iconify/react";
+
 import { Controller, useForm } from "react-hook-form";
-import NumberFormat from "react-number-format";
+
 
 
 const avatars = [
   {
     name: 'Casa',
-    url: 'https://bit.ly/ryan-florence',
+    url: 'https://svgsilh.com/svg/148837.svg',
   },
   {
     name: 'Carro',
-    url: 'https://bit.ly/sage-adebayo',
+    url: 'https://svgsilh.com/svg/1889366.svg',
   },
   {
     name: 'Reforma',
@@ -62,16 +61,9 @@ type FormData = {
 export default function JoinOurTeam(props: FlexProps) {
   const color = { light: 'black', dark: 'whiteAlpha.800' }
   const bgColor = { light: 'gray.50', dark: 'gray.800' }
-  const [value, setValue] = useState('')
-  const handleChange = (event) => setValue(parse(event.target.value))
-  const parse = (event) => event.replace(/(\d{2})(\d{5})(\d{4})/, '')
-  
- 
-  const [Telefone, setTelefone] = useState('(12) 3456-7890')
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
   const onSubmit = handleSubmit(data => console.log(data));
   const { colorMode } = useColorMode()
-
 
   return (
 
@@ -181,41 +173,46 @@ export default function JoinOurTeam(props: FlexProps) {
           </Stack>
           <Box as={'form'} mt={10} onSubmit={onSubmit}>
             <Stack spacing={4}>
-              <Input
-                placeholder="Nome"
-                {...register("FirstName")}
-                bg={'gray.100'}
-                border={0}
-                color={'gray.500'}
-                _placeholder={{
-                  color: 'gray.500',
-                }}
-              />
-              <Input
-                placeholder="firstname@lastname.io"
-                {...register("Email")}
-                bg={'gray.100'}
-                border={0}
-                color={'gray.500'}
-                _placeholder={{
-                  color: 'gray.500',
-                }}
-              />
-              <Input
-                {...register("Telefone")}
-                value={handleChange}
-                onChange={handleChange}            
-               
-                placeholder="(__) ____ - ____ "
-
-                bg={'gray.100'}
-                border={0}
-                color={'gray.500'}
-                _placeholder={{
-                  color: 'gray.500',
-                }}
-              />
-
+              <FormControl variant='floating' id='first-name' >
+                <Input placeholder=' '
+                  {...register("FirstName")}
+                  bg={'gray.100'}
+                  border={0}
+                  color={'gray.500'}
+                  _placeholder={{
+                    color: 'gray.500',
+                  }} />
+                {/* It is important that the Label comes after the Control due to css selectors */}
+                <FormLabel color={'gray.500'} >Nome</FormLabel>
+                
+              </FormControl>
+              <FormControl variant='floating' id='email' >
+                <Input placeholder=' '
+                  {...register("Email")}
+                  bg={'gray.100'}
+                  border={0}
+                  color={'gray.500'}
+                  _placeholder={{
+                    color: 'gray.500',
+                  }} />
+                {/* It is important that the Label comes after the Control due to css selectors */}
+                <FormLabel color={'gray.500'} >E-mail</FormLabel>
+                
+              </FormControl>
+              <FormControl variant='floating' id='phone' >
+                <Input placeholder=' '
+                  {...register("Telefone")}
+                  bg={'gray.100'}
+                  border={0}
+                  color={'gray.500'}
+                  _placeholder={{
+                    color: 'gray.500',
+                  }} />
+                {/* It is important that the Label comes after the Control due to css selectors */}
+                <FormLabel color={'gray.500'} >Telefone</FormLabel>
+                
+              </FormControl>
+              
             </Stack>
             <Button
               fontFamily={'heading'}
