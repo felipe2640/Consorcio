@@ -12,6 +12,7 @@ import {
   AvatarGroup,
   useBreakpointValue,
   useColorMode,
+  Badge,
   FlexProps,
   FormControl,
   FormErrorMessage,
@@ -158,7 +159,7 @@ export default function JoinOurTeam(props: FlexProps) {
               color={color[colorMode]}
               lineHeight={1.1}
               fontSize={{ base: '2xl', sm: '3xl', md: '4xl' }}>
-              Join our team
+              Faça uma simulação
               <Text
                 as={'span'}
                 bgGradient="linear(to-r, red.400,pink.400)"
@@ -166,10 +167,16 @@ export default function JoinOurTeam(props: FlexProps) {
                 !
               </Text>
             </Heading>
-            <Text bg={bgColor[colorMode]} fontSize={{ base: 'sm', sm: 'md' }}>
-              We’re looking for amazing engineers just like you! Become a part
-              of our rockstar engineering team and skyrocket your career!
-            </Text>
+            <Stack maxW='32rem'>
+              <Text bg={bgColor[colorMode]} fontSize={{ base: 'md', sm: 'ld' }}>
+                Esta a procura de um otimo seguro para seu bem ou consorcio para seu proximo sonho
+                fale com a gente e venha ser
+                <Badge borderRadius='full' px='2' variant='solid' ml='0.15em' fontSize='1em' colorScheme='blue'>
+                  Mega Seguro
+                </Badge>
+                
+              </Text>
+            </Stack>
           </Stack>
           <Box as={'form'} mt={10} onSubmit={onSubmit}>
             <Stack spacing={4}>
@@ -184,7 +191,7 @@ export default function JoinOurTeam(props: FlexProps) {
                   }} />
                 {/* It is important that the Label comes after the Control due to css selectors */}
                 <FormLabel color={'gray.500'} >Nome</FormLabel>
-                
+
               </FormControl>
               <FormControl variant='floating' id='email' >
                 <Input placeholder=' '
@@ -197,7 +204,7 @@ export default function JoinOurTeam(props: FlexProps) {
                   }} />
                 {/* It is important that the Label comes after the Control due to css selectors */}
                 <FormLabel color={'gray.500'} >E-mail</FormLabel>
-                
+
               </FormControl>
               <FormControl variant='floating' id='phone' >
                 <Input placeholder=' '
@@ -210,9 +217,9 @@ export default function JoinOurTeam(props: FlexProps) {
                   }} />
                 {/* It is important that the Label comes after the Control due to css selectors */}
                 <FormLabel color={'gray.500'} >Telefone</FormLabel>
-                
+
               </FormControl>
-              
+
             </Stack>
             <Button
               fontFamily={'heading'}
