@@ -7,6 +7,7 @@ import {
   Input,
   Container,
   Button,
+  Select,
   SimpleGrid,
   Avatar,
   AvatarGroup,
@@ -52,6 +53,8 @@ const avatars = [
 ];
 
 type FormData = {
+  Tipo: string;
+  Valor: number;
   FirstName: string;
   Email: string;
   Telefone: number;
@@ -172,16 +175,32 @@ export default function JoinOurTeam(props: FlexProps) {
                 Esta a procura de um otimo seguro para seu bem ou consorcio para seu proximo sonho
                 fale com a gente e venha ser
                 <Badge borderRadius='full' px='2' variant='solid' ml='0.15em' fontSize='1em' colorScheme='blue'>
-                  Mega Seguro
+                  Mega Seguros
                 </Badge>
-                
+
               </Text>
             </Stack>
           </Stack>
           <Box as={'form'} mt={10} onSubmit={onSubmit}>
             <Stack spacing={4}>
               <FormControl variant='floating' id='first-name' >
-                <Input placeholder=' '
+                <Select 
+                  placeholder='Selecione opção'
+                  bg={'gray.100'}
+                  border={0}
+                  color={'gray.500'}
+                  _placeholder={{
+                    color: 'gray.500',
+                  }}>
+                  <option value='Seguros'>Seguros</option>
+                  <option value='Consorcio'>Consorcio</option>
+                </Select>
+                <FormLabel color={'gray.500'} >Tipo</FormLabel>
+
+              </FormControl>
+              <FormControl variant='floating' id='first-name' >
+                <Input 
+                  placeholder=' '
                   {...register("FirstName")}
                   bg={'gray.100'}
                   border={0}
