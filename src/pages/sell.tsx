@@ -7,50 +7,20 @@ import {
   Input,
   Container,
   Button,
-  Select,
   SimpleGrid,
-  Avatar,
-  AvatarGroup,
   useBreakpointValue,
   useColorMode,
   Badge,
   FlexProps,
   FormControl,
-  FormErrorMessage,
-  FormHelperText,
   FormLabel,
-  IconProps,
 } from '@chakra-ui/react';
 import { DarkModeSwitch } from '../components/DarkModeSwitch'
 import React, { useState } from 'react';
+import company from '../../company';
+import avatars from '../components/avatars';
 import { Icon } from "@iconify/react";
-
 import { Controller, useForm } from "react-hook-form";
-
-
-
-const avatars = [
-  {
-    name: 'Casa',
-    url: 'https://svgsilh.com/svg/148837.svg',
-  },
-  {
-    name: 'Carro',
-    url: 'https://svgsilh.com/svg/1889366.svg',
-  },
-  {
-    name: 'Reforma',
-    url: 'https://bit.ly/kent-c-dodds',
-  },
-  {
-    name: 'Prosper Otemuyiwa',
-    url: 'https://bit.ly/prosper-baba',
-  },
-  {
-    name: 'Christian Nwamba',
-    url: 'https://bit.ly/code-beast',
-  },
-];
 
 type FormData = {
   Tipo: string;
@@ -61,10 +31,47 @@ type FormData = {
 
 };
 
+function formatPhoneNumber(value) {
+  // if input value is falsy eg if the user deletes the input, then just return
+  if (!value) return value;
+
+  // clean the input for any non-digit values.
+  const phoneNumber = value.replace(/[^\d]/g, "");
+
+  // phoneNumberLength is used to know when to apply our formatting for the phone number
+  const phoneNumberLength = phoneNumber.length;
+
+  // we need to return the value with no formatting if its less then four digits
+  // this is to avoid weird behavior that occurs if you  format the area code to early
+  if (phoneNumberLength < 3) return phoneNumber;
+
+  // if phoneNumberLength is greater than 4 and less the 7 we start to return
+  // the formatted number
+  if (phoneNumberLength < 7) {
+    return `(${phoneNumber.slice(0, 2)}) ${phoneNumber.slice(2)}`;
+  }
+
+  // finally, if the phoneNumberLength is greater then seven, we add the last
+  // bit of formatting and return it.
+  return `(${phoneNumber.slice(0, 2)}) ${phoneNumber.slice(
+    2,
+    7
+  )}-${phoneNumber.slice(7, 11)}`;
+}
+
+
 
 export default function JoinOurTeam(props: FlexProps) {
   const color = { light: 'black', dark: 'whiteAlpha.800' }
   const bgColor = { light: 'gray.50', dark: 'gray.800' }
+  const [inputValue, setInputValue] = useState("");
+
+  const handleInput = (e) => {
+    // this is where we'll call the phoneNumberFormatter function
+    const formattedPhoneNumber = formatPhoneNumber(e.target.value);
+    // we'll set the input value using our setInputValue
+    setInputValue(formattedPhoneNumber);
+  };
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
   const onSubmit = handleSubmit(data => console.log(data));
   const { colorMode } = useColorMode()
@@ -73,7 +80,7 @@ export default function JoinOurTeam(props: FlexProps) {
 
 
     <Box position={'relative'} bgGradient="linear-gradient(90deg, rgba(38,152,250,1) 0%, rgba(47,130,250,1) 38%, rgba(57,104,250,1) 99%)" >
-      <DarkModeSwitch />
+      <DarkModeSwitch/>
       <Container
         as={SimpleGrid}
         maxW={'7xl'}
@@ -90,35 +97,46 @@ export default function JoinOurTeam(props: FlexProps) {
               as={'span'}
               bgGradient="linear(to-r, red.400,pink.400)"
               bgClip="text">
-              &
+              É
             </Text>{' '}
-            Seguros
+            imagem
           </Heading>
           <Stack direction={'row'} spacing={4} align={'center'}>
-            <AvatarGroup>
-              {avatars.map((avatar) => (
-                <Avatar
-                  key={avatar.name}
-                  name={avatar.name}
-                  src={avatar.url}
-                  size={useBreakpointValue({ base: 'md', md: 'lg' })}
-                  position={'relative'}
-                  zIndex={2}
-                  _before={{
-                    content: '""',
-                    width: 'full',
-                    height: 'full',
-                    rounded: 'full',
-                    transform: 'scale(1.125)',
-                    bgGradient: 'linear(to-bl, red.400,pink.400)',
-                    position: 'absolute',
-                    zIndex: -1,
-                    top: 0,
-                    left: 0,
-                  }}
+          {avatars.map((avatar) => (
+              <Flex
+                align={'center'}
+                justify={'center'}
+                fontFamily={'heading'}
+                fontSize={{ base: 'sm', md: 'lg' }}
+                bg={bgColor[colorMode]}
+                color={color[colorMode]}
+                rounded={'full'}
+                width={useBreakpointValue({ base: '44px', md: '60px' })}
+                height={useBreakpointValue({ base: '44px', md: '60px' })}
+                position={'relative'}
+                _before={{
+                  content: '""',
+                  width: 'full',
+                  height: 'full',
+                  rounded: 'full',
+                  transform: 'scale(1.125)',
+                  bgGradient: 'linear(to-bl, orange.400,yellow.400)',
+                  position: 'absolute',
+                  zIndex: -1,
+                  top: 0,
+                  left: 0
+                }}
+              >
+                <Icon
+                  icon={avatar.icon}
+                  width={useBreakpointValue({ base: '30px', md: '40px' })}
+                  height={useBreakpointValue({ base: '30px', md: '40px' })}
+                  style={{ position: 'relative' }}
+                  color={company.color}
                 />
-              ))}
-            </AvatarGroup>
+              </Flex>
+            ))}
+
             <Text fontFamily={'heading'} fontSize={{ base: '4xl', md: '6xl' }}>
               +
             </Text>
@@ -162,42 +180,36 @@ export default function JoinOurTeam(props: FlexProps) {
               color={color[colorMode]}
               lineHeight={1.1}
               fontSize={{ base: '2xl', sm: '3xl', md: '4xl' }}>
-              Faça uma simulação
+              Faça uma simulação 
               <Text
                 as={'span'}
                 bgGradient="linear(to-r, red.400,pink.400)"
+                marginLeft={4}
                 bgClip="text">
-                !
+                 !
               </Text>
             </Heading>
             <Stack maxW='32rem'>
               <Text bg={bgColor[colorMode]} fontSize={{ base: 'md', sm: 'ld' }}>
-                Esta a procura de um otimo seguro para seu bem ou consorcio para seu proximo sonho
-                fale com a gente e venha ser
-                <Badge borderRadius='full' px='2' variant='solid' ml='0.15em' fontSize='1em' colorScheme='blue'>
-                  Mega Seguros
+                Esta a procura de um consorcio para seu proximo sonho
+                fale com a gente e venha ser 
+                <br />
+                <Badge
+                  borderRadius="full"
+                  px="2"
+                  m="1rem"
+                  variant="solid"
+                  ml="0.15em"
+                  fontSize="1em"
+                  colorScheme={company.color}
+                >
+                  {company.empresa}
                 </Badge>
-
               </Text>
             </Stack>
           </Stack>
           <Box as={'form'} mt={10} onSubmit={onSubmit}>
             <Stack spacing={4}>
-              <FormControl variant='floating' id='first-name' >
-                <Select 
-                  placeholder='Selecione opção'
-                  bg={'gray.100'}
-                  border={0}
-                  color={'gray.500'}
-                  _placeholder={{
-                    color: 'gray.500',
-                  }}>
-                  <option value='Seguros'>Seguros</option>
-                  <option value='Consorcio'>Consorcio</option>
-                </Select>
-                <FormLabel color={'gray.500'} >Tipo</FormLabel>
-
-              </FormControl>
               <FormControl variant='floating' id='first-name' >
                 <Input 
                   placeholder=' '
@@ -228,6 +240,7 @@ export default function JoinOurTeam(props: FlexProps) {
               <FormControl variant='floating' id='phone' >
                 <Input placeholder=' '
                   {...register("Telefone")}
+                  onChange={(e) => handleInput(e)} value={inputValue}
                   bg={'gray.100'}
                   border={0}
                   color={'gray.500'}
