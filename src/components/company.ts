@@ -50,6 +50,8 @@ const companyArray: Array<Companys> = [
     tipo: 'Consórcio',
     color: 'red',
     logo1: '/embracon_logo.jpg',
+    googleSearch: 'V3TnGO5jtUvihV6KSQONBtw_Z_x3b6yWhLwjiTlXeE8',
+    content:'Consórcio Embracon - Simulador de Consórcio Online - Carta de Crédito para Imóveis, Carros, Motos ou Serviços. Clique Aqui e Confira!',
     logo: [
         {
           lg1: 'https://svgsilh.com/svg/148837.svg',

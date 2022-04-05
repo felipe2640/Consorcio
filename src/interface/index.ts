@@ -8,6 +8,8 @@ export type Companys = {
   tipo: string;
   color: string;
   logo1: string;
+  googleSearch?: string;
+  content?:string;
   logo?: Array<Logo>;
 };
 
