@@ -10,13 +10,13 @@ type Props = {
 }
 
 const books = ({ items }: Props) => {
-    
+
     return (
         <>
 
-            <div className='container-fluid'>
+            {/* <div className='container-fluid'>
                 <CompanyCard items={items} />
-            </div>
+            </div> */}
         </>
     );
 }
