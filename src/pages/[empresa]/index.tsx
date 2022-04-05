@@ -11,20 +11,16 @@ import {
   useBreakpointValue,
   useColorMode,
   Badge,
-  FlexProps,
   FormControl,
   FormLabel,
-  useQuery,
 } from '@chakra-ui/react';
 import { DarkModeSwitch } from '../../components/DarkModeSwitch'
 import React, { useState } from 'react';
-import company from '../../components/company';
 import avatars from '../../components/avatars';
 import { Icon } from "@iconify/react";
 import { useForm } from "react-hook-form";
-import { Logo, Companys } from "../../interface";
+import { Companys } from "../../interface";
 import companyArray from "../../components/company"
-import { useRouter } from 'next/router'
 import Image from 'next/image'
 import { GetStaticPaths, GetStaticProps } from "next";
 
