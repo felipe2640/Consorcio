@@ -7,7 +7,6 @@ import {
   Input,
   Container,
   Button,
-
   SimpleGrid,
   useBreakpointValue,
   useColorMode,
@@ -15,22 +14,35 @@ import {
   FlexProps,
   FormControl,
   FormLabel,
+  useQuery,
 } from '@chakra-ui/react';
-import { DarkModeSwitch } from '../components/DarkModeSwitch'
+import { DarkModeSwitch } from '../../components/DarkModeSwitch'
 import React, { useState } from 'react';
-import company from '../../company';
-import avatars from '../components/avatars';
+import company from '../../components/company';
+import avatars from '../../components/avatars';
 import { Icon } from "@iconify/react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import { Logo, Companys } from "../../interface";
+import companyArray from "../../components/company"
+import { useRouter } from 'next/router'
+import Image from 'next/image'
+import { GetStaticPaths, GetStaticProps } from "next";
+
+
 
 type FormData = {
-  Tipo: string;
-  Valor: number;
   FirstName: string;
   Email: string;
   Telefone: number;
+  Empresa: string;
 
 };
+
+type Props = {
+  item?: Companys
+  errors?: string
+}
+
 
 function formatPhoneNumber(value) {
   // if input value is falsy eg if the user deletes the input, then just return
@@ -62,7 +74,7 @@ function formatPhoneNumber(value) {
 
 
 
-export default function JoinOurTeam(props: FlexProps) {
+export default function JoinOurTeam({ item }: Props) {
   const color = { light: 'black', dark: 'whiteAlpha.800' }
   const bgColor = { light: 'gray.50', dark: 'gray.800' }
   const [inputValue, setInputValue] = useState("");
@@ -74,14 +86,15 @@ export default function JoinOurTeam(props: FlexProps) {
     setInputValue(formattedPhoneNumber);
   };
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
-  const onSubmit = handleSubmit(data => console.log(data));
+  const onSubmit = handleSubmit(data => console.log([data, item.empresa]));
   const { colorMode } = useColorMode()
+
 
   return (
 
 
     <Box position={'relative'} bgGradient="linear-gradient(90deg, rgba(38,152,250,1) 0%, rgba(47,130,250,1) 38%, rgba(57,104,250,1) 99%)" >
-      <DarkModeSwitch/>
+      <DarkModeSwitch />
       <Container
         as={SimpleGrid}
         maxW={'7xl'}
@@ -92,18 +105,33 @@ export default function JoinOurTeam(props: FlexProps) {
           <Heading
             color={color[colorMode]}
             lineHeight={1.1}
+            
             fontSize={{ base: '3xl', sm: '4xl', md: '5xl', lg: '6xl' }}>
-            Consorcio{' '}
+            {item.tipo}{' '}
             <Text
               as={'span'}
               bgGradient="linear(to-r, red.400,pink.400)"
-              bgClip="text">
+              bgClip="text"
+              margin={2}
+            >
               É
-            </Text>{' '}
-            imagem
+            </Text >{' '}
+            <br />
+            <Box
+              h={'210px'}
+              mt={6}
+              mx={6}
+              pos={'relative'}>
+              <Image
+
+                src={item.logo1}
+                alt="Picture of the author"
+                layout='fill'
+              />  
+            </Box>
           </Heading>
-          <Stack direction={'row'} spacing={4} align={'center'}>
-          {avatars.map((avatar) => (
+          <Stack direction={'row'} align={'center'}>
+            {avatars.map((avatar) => (
               <Flex
                 align={'center'}
                 justify={'center'}
@@ -133,7 +161,7 @@ export default function JoinOurTeam(props: FlexProps) {
                   width={useBreakpointValue({ base: '30px', md: '40px' })}
                   height={useBreakpointValue({ base: '30px', md: '40px' })}
                   style={{ position: 'relative' }}
-                  color={company.color}
+
                 />
               </Flex>
             ))}
@@ -181,19 +209,19 @@ export default function JoinOurTeam(props: FlexProps) {
               color={color[colorMode]}
               lineHeight={1.1}
               fontSize={{ base: '2xl', sm: '3xl', md: '4xl' }}>
-              Faça uma simulação 
+              Faça uma simulação
               <Text
                 as={'span'}
                 bgGradient="linear(to-r, red.400,pink.400)"
                 marginLeft={4}
                 bgClip="text">
-                 !
+                !
               </Text>
             </Heading>
             <Stack maxW='32rem'>
               <Text bg={bgColor[colorMode]} fontSize={{ base: 'md', sm: 'ld' }}>
-                Esta a procura de um consorcio para seu proximo sonho
-                fale com a gente e venha ser 
+                Esta a procura de um {item.tipo} para seu proximo sonho
+                fale com a gente e venha ser
                 <br />
                 <Badge
                   borderRadius="full"
@@ -202,9 +230,9 @@ export default function JoinOurTeam(props: FlexProps) {
                   variant="solid"
                   ml="0.15em"
                   fontSize="1em"
-                  colorScheme={company.color}
+                  colorScheme={item.color}
                 >
-                  {company.empresa}
+                  {item.empresa}
                 </Badge>
               </Text>
             </Stack>
@@ -212,7 +240,7 @@ export default function JoinOurTeam(props: FlexProps) {
           <Box as={'form'} mt={10} onSubmit={onSubmit}>
             <Stack spacing={4}>
               <FormControl variant='floating' id='first-name' >
-                <Input 
+                <Input
                   placeholder=' '
                   {...register("FirstName")}
                   bg={'gray.100'}
@@ -278,3 +306,22 @@ export default function JoinOurTeam(props: FlexProps) {
   );
 }
 
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const paths = companyArray.map((book) => ({
+    params: { empresa: book.empresa }
+  }))
+
+  return { paths, fallback: false }
+}
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  try {
+    const category = params?.empresa
+    const item = companyArray.find((data) => data.empresa === category)
+
+    return { props: { item } }
+  } catch (err) {
+    return { props: { errors: err.message } }
+  }
+}
