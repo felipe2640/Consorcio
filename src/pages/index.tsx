@@ -14,9 +14,9 @@ const books = ({ items }: Props) => {
     return (
         <>
 
-            {/* <div className='container-fluid'>
-                <CompanyCard items={items} />
-            </div> */}
+            <div className='container-fluid'>
+                <CompanyCard key={items.toString()}  items={items} />
+            </div>
         </>
     );
 }
