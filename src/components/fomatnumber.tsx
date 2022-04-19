@@ -27,3 +27,5 @@ function formatPhoneNumber(value) {
     7
   )}-${phoneNumber.slice(7, 11)}`;
 }
+
+export default formatPhoneNumber;

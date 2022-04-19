@@ -23,6 +23,7 @@ import { Companys } from "../../interface";
 import companyArray from "../../components/company"
 import Image from 'next/image'
 import { GetStaticPaths, GetStaticProps } from "next";
+import formatPhoneNumber from '../../components/fomatnumber';
 import Head from 'next/head'
 
 
@@ -40,45 +41,13 @@ type Props = {
 }
 
 
-function formatPhoneNumber(value) {
-  // if input value is falsy eg if the user deletes the input, then just return
-  if (!value) return value;
-
-  // clean the input for any non-digit values.
-  const phoneNumber = value.replace(/[^\d]/g, "");
-
-  // phoneNumberLength is used to know when to apply our formatting for the phone number
-  const phoneNumberLength = phoneNumber.length;
-
-  // we need to return the value with no formatting if its less then four digits
-  // this is to avoid weird behavior that occurs if you  format the area code to early
-  if (phoneNumberLength < 3) return phoneNumber;
-
-  // if phoneNumberLength is greater than 4 and less the 7 we start to return
-  // the formatted number
-  if (phoneNumberLength < 7) {
-    return `(${phoneNumber.slice(0, 2)}) ${phoneNumber.slice(2)}`;
-  }
-
-  // finally, if the phoneNumberLength is greater then seven, we add the last
-  // bit of formatting and return it.
-  return `(${phoneNumber.slice(0, 2)}) ${phoneNumber.slice(
-    2,
-    7
-  )}-${phoneNumber.slice(7, 11)}`;
-}
-
-
-
 export default function JoinOurTeam({ item }: Props) {
   const color = { light: 'black', dark: 'whiteAlpha.800' }
   const bgColor = { light: 'gray.50', dark: 'gray.800' }
   const [inputValue, setInputValue] = useState("");
 
-  const handleInput = (e) => {
-    // this is where we'll call the phoneNumberFormatter function
+  const handleInput = (e) => { 
     const formattedPhoneNumber = formatPhoneNumber(e.target.value);
-    // we'll set the input value using our setInputValue
     setInputValue(formattedPhoneNumber);
   };
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
@@ -121,11 +90,12 @@ export default function JoinOurTeam({ item }: Props) {
               <br />
               <Box
                 h={'210px'}
+                w={'405px'}
+                
                 mt={6}
                 mx={6}
                 pos={'relative'}>
                 <Image
-
                   src={item.logo1}
                   alt="Picture of the author"
                   layout='fill'
@@ -160,6 +130,7 @@ export default function JoinOurTeam({ item }: Props) {
                 >
                   <Icon
                     icon={avatar.icon}
+                    key={avatar.id}
                     width={useBreakpointValue({ base: '30px', md: '40px' })}
                     height={useBreakpointValue({ base: '30px', md: '40px' })}
                     style={{ position: 'relative' }}
