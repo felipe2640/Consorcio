@@ -33,7 +33,7 @@ $ npm run dev
 
 ```
 
-### 🛠 Tecnologias
+### 🛠 Technology
 
 The following tools were used in building the project:
 
