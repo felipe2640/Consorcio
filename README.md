@@ -12,7 +12,7 @@
 - [x] Interface UI
 - [x] Dynamic API
 - [X] Interface UX
-- [] Conecction with DB
+- [ ] Conecction with DB
 
 
 ### 🎲 Back End (server)
